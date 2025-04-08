@@ -1,27 +1,33 @@
+#include "esp32-hal-gpio.h"
 #include <Arduino.h>
 #include <DHT.h>
 #include <PubSubClient.h>
 #include <WiFi.h>
+#include <cstdlib>
 
 #include "main.h"
 
 // Definindo os Sensores
-#define DHT_PIN 5 // Pino do sensor DHT11
-#define DHT_TYPE DHT11 // Tipo do sensor DHT
-#define UMIDADE_SOLO 33 // Pino do sensor de umidade do solo
-#define LUMINOSIDADE 32 // Pino do sensor de luminosidade (LDR)
+constexpr unsigned char DHT_TYPE = DHT11; // Tipo do sensor DHT
+constexpr unsigned char DHT_PIN = 5; // Pino do sensor DHT11
+constexpr unsigned char UMIDADE_SOLO = 33; // Pino do sensor de umidade do solo
+constexpr unsigned char LUMINOSIDADE =
+	32; // Pino do sensor de luminosidade (LDR)
 
-// Definindo as Saídas.
-#define LED_LUMINOSIDADE 22 // LED para indicar baixa luminosidade
-#define VENTOINHA 23 // Pino da ventoinha
-#define LED_UMIDADE 21 // LED para indicar baixa umidade
-#define LED_SOLO 3 // LED para indicar baixa umidade do solo
+// Definindo os Atuadores.
+constexpr unsigned char LED_LUMINOSIDADE =
+	22; // LED para indicar baixa luminosidade
+constexpr unsigned char VENTOINHA = 23; // Pino da ventoinha
+constexpr unsigned char LED_UMIDADE = 21; // LED para indicar baixa umidade
+constexpr unsigned char LED_SOLO = 3; // LED para indicar baixa umidade do solo
+constexpr unsigned char LED_CONTROLAVEL_PRA_TESTAR = 18; // Pro TP2.
 
 // Definições para MQTT
-#define TOPICO_LUZ "sensor/luminosidade"
-#define TOPICO_TEMPERATURA "sensor/temperatura"
-#define TOPICO_UMIDADE_AR "sensor/umidade/ar"
-#define TOPICO_UMIDADE_SOLO "sensor/umidade/solo"
+const char TOPICO_LUZ[] = "sensor/luminosidade";
+const char TOPICO_TEMPERATURA[] = "sensor/temperatura";
+const char TOPICO_UMIDADE_AR[] = "sensor/umidade/ar";
+const char TOPICO_UMIDADE_SOLO[] = "sensor/umidade/solo";
+const char TOPICO_LED_DE_TESTE[] = "tp2/atuador/led_teste";
 
 #define ID_MQTT "Agroflow" // ID MQTT para identificação de sessão
 
@@ -56,14 +62,19 @@ void initMQTT(void)
 // Função de callback para MQTT
 void mqtt_callback(char *topic, byte *payload, unsigned int length)
 {
-	String msg;
+	char msg[128];
 
-	for (int i = 0; i < length; i++) {
-		msg += (char)payload[i];
-	}
+	for (int i = 0; i < length; ++i)
+		msg[i] = (char)payload[i];
+	msg[length] = '\0';
 
 	Serial.print("Comando MQTT recebido: ");
 	Serial.println(msg);
+
+	int op = atoi(msg);
+	Serial.print("Traduzido: ");
+	Serial.println(op);
+	digitalWrite(LED_CONTROLAVEL_PRA_TESTAR, op ? HIGH : LOW);
 
 	/* if (strcmp(topic, TOPICO_LUZ) == 0) {
 		if (msg.equals("0")) {
@@ -107,6 +118,7 @@ void reconnectMQTT(void)
 		Serial.println("Conectando ao Broker MQTT...");
 		if (MQTT.connect(ID_MQTT)) {
 			Serial.println("Conectado!");
+			MQTT.subscribe(TOPICO_LED_DE_TESTE);
 			// MQTT.subscribe(TOPICO_UMIDADE_AR);
 			// MQTT.subscribe(TOPICO_LUZ);
 			// MQTT.subscribe(TOPICO_TEMPERATURA);
@@ -193,6 +205,7 @@ void setup()
 	pinMode(LED_LUMINOSIDADE, OUTPUT);
 	pinMode(LED_UMIDADE, OUTPUT);
 	pinMode(VENTOINHA, OUTPUT);
+	pinMode(LED_CONTROLAVEL_PRA_TESTAR, OUTPUT);
 	pinMode(LUMINOSIDADE, INPUT);
 	pinMode(UMIDADE_SOLO, INPUT);
 
