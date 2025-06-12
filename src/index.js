@@ -142,10 +142,62 @@ mqttClient.on("message", (topic, message) => {
   }
 });
 
+// 1. GET /targets  – list recent targets
+app.get("/targets", async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      "SELECT * FROM public.target ORDER BY id DESC LIMIT 50"
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error("Error fetching targets:", err);
+    res.status(500).json({ error: "DB error" });
+  }
+});
+
+// 2. POST /targets – create a new target
+app.post("/targets", async (req, res) => {
+  const { temperatura, luminosidade, umidade_ar, umidade_solo } = req.body;
+  try {
+    const { rows } = await pool.query(
+      `INSERT INTO public.target
+         (temperatura, luminosidade, umidade_ar, umidade_solo)
+       VALUES ($1,$2,$3,$4)
+       RETURNING *`,
+      [temperatura, luminosidade, umidade_ar, umidade_solo]
+    );
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    console.error("Error inserting target:", err);
+    res.status(500).json({ error: "DB error" });
+  }
+});
+
+// 3. DELETE /targets/:id – delete a target
+app.delete("/targets/:id", async (req, res) => {
+  try {
+    const { rows, rowCount } = await pool.query(
+      "DELETE FROM public.target WHERE id = $1 RETURNING *",
+      [req.params.id]
+    );
+    if (!rowCount) return res.status(404).json({ error: "Not found" });
+    res.json(rows[0]);
+  } catch (err) {
+    console.error("Error deleting target:", err);
+    res.status(500).json({ error: "DB error" });
+  }
+});
+
 // Graceful shutdown
 process.on("SIGINT", async () => {
   console.log("Shutting down...");
   mqttClient.end();
   await pool.end();
   process.exit();
+});
+
+const path = require('path');
+app.use(express.static(path.join(__dirname, '../client/build')));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
