@@ -57,7 +57,7 @@ app.listen(PORT, () => {
 // Aggregation object for sensor data
 let measurementBatch = {};
 let batchTimer       = null;
-const BATCH_INTERVAL = 10000; // ten seconds aggregation window
+const BATCH_INTERVAL = 2000; // 2 seconds aggregation window
 
 // Function to insert a batch into the database.
 const processBatch = async () => {
