@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Slider, Button, Typography } from '@mui/material';
 
 export default function SensorSlider({
-  keyName, label, max, color,
+  keyName, max, color,
   latestTarget = {},
   onSetTarget,
 }) {
@@ -37,7 +37,7 @@ export default function SensorSlider({
   return (
     <Box>
       <Typography gutterBottom>
-        {label} Target: {value}
+        Target: {value}
       </Typography>
       <Slider
         value={value}

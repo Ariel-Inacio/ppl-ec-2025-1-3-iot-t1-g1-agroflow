@@ -1,3 +1,4 @@
+// SensorChart.js
 import React from 'react';
 import {
   ResponsiveContainer,
@@ -7,16 +8,22 @@ import {
 
 export default function SensorChart({ data, dataKey, color }) {
   const chartData = data.map(d => ({
-    time: new Date(d.momento_registro).toLocaleTimeString(),
+    timestamp: new Date(d.momento_registro).getTime(),  // Use timestamp
     [dataKey]: d[dataKey]
   }));
 
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart data={chartData}>
-        <XAxis dataKey="time" tick={{ fontSize: 12 }} />
+        <XAxis
+          dataKey="timestamp"
+          type="number"
+          domain={['auto', 'auto']}
+          tickFormatter={(unixTime) => new Date(unixTime).toLocaleTimeString()}
+          tick={{ fontSize: 12 }}
+        />
         <YAxis tick={{ fontSize: 12 }} />
-        <Tooltip />
+        <Tooltip labelFormatter={(unixTime) => new Date(unixTime).toLocaleTimeString()} />
         <Line
           type="monotone"
           dataKey={dataKey}

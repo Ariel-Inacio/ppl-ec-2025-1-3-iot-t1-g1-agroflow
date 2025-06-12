@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Grid, Paper, Box } from '@mui/material';
+import { Container, Grid, Paper, Box, Typography } from '@mui/material';
 import SensorChart from './components/SensorChart';
 import Gauge from './components/Gauge';
 import SensorSlider from './components/SensorSlider';
+import SensorTable from './components/SensorTable'; // Import the new component
 
 const sensors = [
-  { key: 'temperatura', label: 'Temperature (°C)',    max: 50,    color: '#ff7300' },
-  { key: 'luminosidade',label: 'Luminosity (lux)',    max: 10000, color: '#fdd835' },
-  { key: 'umidade_ar',  label: 'Humidity (Air %)',    max: 100,   color: '#42a5f5' },
-  { key: 'umidade_solo',label: 'Humidity (Soil %)',   max: 1000,  color: '#8d6e63' }
+  { key: 'temperatura', label: 'Temperatura (°C)', max: 50,    color: '#ff7300' },
+  { key: 'luminosidade',label: 'Luminosidade',     max: 10000, color: '#fdd835' },
+  { key: 'umidade_ar',  label: 'Umidade (Ar %)',   max: 100,   color: '#42a5f5' },
+  { key: 'umidade_solo',label: 'Umidade (Solo %)', max: 1000,  color: '#8d6e63' }
 ];
 
 function App() {
@@ -40,9 +41,9 @@ function App() {
     <>
       <header>Painel de Controle AgroFlow</header>
       <Container sx={{ py: 4 }}>
-        <Grid container spacing={4}>
+        <Grid container spacing={4} justifyContent="center">
           {sensors.map(({ key, label, max, color }) => (
-            <Grid key={key} item xs={12} md={6}>
+            <Grid key={key} item xs={12} md={6} sx={{ minWidth: 400 }}>
               <Paper sx={{ p: 3, height: '100%' }}>
                 <Box mb={2}>
                   <Gauge
@@ -52,7 +53,7 @@ function App() {
                     label={label}
                   />
                 </Box>
-                <Box mb={2} sx={{ height: 250 }}>
+                <Box mb={2} sx={{ height: 300 }}>
                   <SensorChart
                     data={readings}
                     dataKey={key}
@@ -61,7 +62,6 @@ function App() {
                 </Box>
                 <SensorSlider
                   keyName={key}
-                  label={label}
                   max={max}
                   color={color}
                   latestTarget={targets[0] || {}}
@@ -71,6 +71,12 @@ function App() {
             </Grid>
           ))}
         </Grid>
+
+        {/* Add the sensor readings table below the cards */}
+        <Box mt={4}>
+          <Typography variant="h6" gutterBottom>Sensor Readings</Typography>
+          <SensorTable readings={readings} />
+        </Box>
       </Container>
     </>
   );
