@@ -72,11 +72,13 @@ export default function TargetControls({ average, latestTarget, onSetTarget }) {
         <Button variant="contained" onClick={handleSave} disabled={!isEditing}>
           Save Targets
         </Button>
-        {isEditing && (
-          <Button variant="outlined" onClick={handleCancel}>
-            Cancel
-          </Button>
-        )}
+        <Button
+          variant="outlined"
+          onClick={handleCancel}
+          sx={{ visibility: isEditing ? 'visible' : 'hidden' }}  // reserves space when hidden
+        >
+          Cancel
+        </Button>
       </Box>
     </Box>
   );
