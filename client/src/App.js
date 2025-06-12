@@ -1,62 +1,78 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Typography, Grid, Paper } from '@mui/material';
+import { Container, Grid, Paper, Box } from '@mui/material';
 import SensorChart from './components/SensorChart';
-import TargetControls from './components/TargetControls';
+import Gauge from './components/Gauge';
+import SensorSlider from './components/SensorSlider';
+
+const sensors = [
+  { key: 'temperatura', label: 'Temperature (°C)',    max: 50,    color: '#ff7300' },
+  { key: 'luminosidade',label: 'Luminosity (lux)',    max: 10000, color: '#fdd835' },
+  { key: 'umidade_ar',  label: 'Humidity (Air %)',    max: 100,   color: '#42a5f5' },
+  { key: 'umidade_solo',label: 'Humidity (Soil %)',   max: 1000,  color: '#8d6e63' }
+];
 
 function App() {
   const [readings, setReadings] = useState([]);
   const [average, setAverage]   = useState({});
   const [targets, setTargets]   = useState([]);
 
-  // Poll sensor readings
+  // Poll endpoints
   useEffect(() => {
-    const fetch = () => axios.get('/readings').then(r => setReadings(r.data.reverse()));
-    fetch();
-    const id = setInterval(fetch, 2000);
-    return () => clearInterval(id);
+    const fR = () => axios.get('/readings').then(r => setReadings(r.data));
+    const intR = setInterval(fR, 2000); fR();
+    return () => clearInterval(intR);
+  }, []);
+  useEffect(() => {
+    const fA = () => axios.get('/average').then(r => setAverage(r.data));
+    const intA = setInterval(fA, 5000); fA();
+    return () => clearInterval(intA);
+  }, []);
+  useEffect(() => {
+    const fT = () => axios.get('/targets').then(r => setTargets(r.data));
+    const intT = setInterval(fT, 5000); fT();
+    return () => clearInterval(intT);
   }, []);
 
-  // Poll rolling average
-  useEffect(() => {
-    const fetch = () => axios.get('/average').then(r => setAverage(r.data));
-    fetch();
-    const id = setInterval(fetch, 5000);
-    return () => clearInterval(id);
-  }, []);
-
-  // Poll targets
-  useEffect(() => {
-    const fetch = () => axios.get('/targets').then(r => setTargets(r.data));
-    fetch();
-    const id = setInterval(fetch, 5000);
-    return () => clearInterval(id);
-  }, []);
-
-  const setNewTarget = (vals) => axios.post('/targets', vals);
+  const handleSetTarget = vals => axios.post('/targets', vals);
 
   return (
-    <Container maxWidth="lg" sx={{ mt:4 }}>
-      <Typography variant="h4" gutterBottom>IoT Dashboard</Typography>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={8}>
-          <Paper sx={{ p:2 }}>
-            <Typography variant="h6">Live Sensor Readings</Typography>
-            <SensorChart data={readings} />
-          </Paper>
+    <>
+      <header>Painel de Controle AgroFlow</header>
+      <Container sx={{ py: 4 }}>
+        <Grid container spacing={4}>
+          {sensors.map(({ key, label, max, color }) => (
+            <Grid key={key} item xs={12} md={6}>
+              <Paper sx={{ p: 3, height: '100%' }}>
+                <Box mb={2}>
+                  <Gauge
+                    value={average[`avg_${key}`]}
+                    max={max}
+                    color={color}
+                    label={label}
+                  />
+                </Box>
+                <Box mb={2} sx={{ height: 250 }}>
+                  <SensorChart
+                    data={readings}
+                    dataKey={key}
+                    color={color}
+                  />
+                </Box>
+                <SensorSlider
+                  keyName={key}
+                  label={label}
+                  max={max}
+                  color={color}
+                  latestTarget={targets[0] || {}}
+                  onSetTarget={handleSetTarget}
+                />
+              </Paper>
+            </Grid>
+          ))}
         </Grid>
-        <Grid item xs={12} md={4}>
-          <Paper sx={{ p:2 }}>
-            <Typography variant="h6">Targets & Averages</Typography>
-            <TargetControls
-              average={average}
-              latestTarget={targets[0]}
-              onSetTarget={setNewTarget}
-            />
-          </Paper>
-        </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </>
   );
 }
 
