@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build:client": "npm --prefix client install && npm --prefix client run build",
+    "build": "npm run build:client",
     "start": "node src/index.js"
   },
   "keywords": [],
