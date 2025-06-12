@@ -21,17 +21,17 @@ function App() {
   // Poll endpoints
   useEffect(() => {
     const fR = () => axios.get('/readings').then(r => setReadings(r.data));
-    const intR = setInterval(fR, 2000); fR();
+    const intR = setInterval(fR, 500); fR();
     return () => clearInterval(intR);
   }, []);
   useEffect(() => {
     const fA = () => axios.get('/average').then(r => setAverage(r.data));
-    const intA = setInterval(fA, 5000); fA();
+    const intA = setInterval(fA, 500); fA();
     return () => clearInterval(intA);
   }, []);
   useEffect(() => {
     const fT = () => axios.get('/targets').then(r => setTargets(r.data));
-    const intT = setInterval(fT, 5000); fT();
+    const intT = setInterval(fT, 500); fT();
     return () => clearInterval(intT);
   }, []);
 
