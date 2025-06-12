@@ -40,7 +40,9 @@ app.use(express.json());
 // Sample endpoint to list the latest sensor readings
 app.get("/readings", async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM public.sensores ORDER BY momento_registro DESC LIMIT 50");
+    const result = await pool.query(
+      "SELECT * FROM public.sensores ORDER BY momento_registro DESC LIMIT 50"
+    );
     res.json(result.rows);
   } catch (err) {
     console.error("DB error:", err);
@@ -85,6 +87,23 @@ const processBatch = async () => {
   measurementBatch = {};
   batchTimer     = null;
 };
+
+// Function to delete old sensor data (older than 10 minutes)
+const deleteOldRecords = async () => {
+  const deleteQuery = `
+    DELETE FROM public.sensores
+    WHERE momento_registro < (NOW() - INTERVAL '10 minutes')
+  `;
+  try {
+    const result = await pool.query(deleteQuery);
+    console.log(`Deleted ${result.rowCount} old record(s)`);
+  } catch (err) {
+    console.error("Error deleting old records:", err);
+  }
+};
+
+// Schedule deletion of old records every 60 minutes (3600000 ms)
+setInterval(deleteOldRecords, 60 * 60 * 1000);
 
 // Connect to the MQTT broker and subscribe to topics.
 const mqttClient = mqtt.connect(MQTT_URL);
