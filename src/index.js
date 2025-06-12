@@ -103,6 +103,7 @@ const deleteOldRecords = async () => {
 };
 
 // Schedule deletion of old records every 60 minutes (3600000 ms)
+deleteOldRecords();
 setInterval(deleteOldRecords, 60 * 60 * 1000);
 
 // Connect to the MQTT broker and subscribe to topics.
