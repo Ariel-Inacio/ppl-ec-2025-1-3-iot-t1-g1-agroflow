@@ -11,10 +11,10 @@ export default function SensorTable({ readings }) {
         <TableHead>
           <TableRow>
             <TableCell>Time</TableCell>
-            <TableCell align="right">Temperature (°C)</TableCell>
-            <TableCell align="right">Luminosity</TableCell>
-            <TableCell align="right">Humidity (Air %)</TableCell>
-            <TableCell align="right">Humidity (Soil %)</TableCell>
+            <TableCell align="right">Temperatura (°C)</TableCell>
+            <TableCell align="right">Luminosidade</TableCell>
+            <TableCell align="right">Umidade (Ar %)</TableCell>
+            <TableCell align="right">Umidade (Solo %)</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

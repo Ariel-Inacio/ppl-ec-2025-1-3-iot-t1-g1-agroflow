@@ -12,7 +12,7 @@ export default function Gauge({ value = 0, max = 100, color, label }) {
   return (
     <Box textAlign="center">
       <Typography variant="subtitle1">
-        {label} Avg: {value?.toFixed(2)}
+        {label} Média: {value?.toFixed(2)}
       </Typography>
       <ResponsiveContainer width="100%" height={100}>
         <RadialBarChart

@@ -77,7 +77,7 @@ function App() {
         </Grid>
 
         <Box mt={4}>
-          <Typography variant="h6" gutterBottom>Sensor Readings</Typography>
+          <Typography variant="h6" gutterBottom>Dados dos Sensores</Typography>
           <SensorTable readings={readings} />
         </Box>
       </Container>

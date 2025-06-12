@@ -37,7 +37,7 @@ export default function SensorSlider({
   return (
     <Box>
       <Typography gutterBottom>
-        Target: {value}
+        Alvo: {value}
       </Typography>
       <Slider
         value={value}
@@ -53,7 +53,7 @@ export default function SensorSlider({
           disabled={!editing}
           onClick={save}
         >
-          Save
+          Confirmar
         </Button>
         <Button
           variant="outlined"
@@ -61,7 +61,7 @@ export default function SensorSlider({
           onClick={cancel}
           sx={{ visibility: editing ? 'visible' : 'hidden' }}
         >
-          Cancel
+          Cancelar
         </Button>
       </Box>
     </Box>
