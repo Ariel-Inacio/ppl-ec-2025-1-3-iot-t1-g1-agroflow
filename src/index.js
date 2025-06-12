@@ -174,7 +174,7 @@ app.post("/targets", async (req, res) => {
 });
 
 // 3. DELETE /targets/:id – delete a target
-app.delete("/targets/:id", async (req, res) => {
+/* app.delete("/targets/:id", async (req, res) => {
   try {
     const { rows, rowCount } = await pool.query(
       "DELETE FROM public.target WHERE id = $1 RETURNING *",
@@ -186,7 +186,7 @@ app.delete("/targets/:id", async (req, res) => {
     console.error("Error deleting target:", err);
     res.status(500).json({ error: "DB error" });
   }
-});
+}); */
 
 // Graceful shutdown
 process.on("SIGINT", async () => {
