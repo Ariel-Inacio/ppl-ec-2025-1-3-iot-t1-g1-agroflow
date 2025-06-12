@@ -4,7 +4,7 @@ import { Container, Grid, Paper, Box, Typography } from '@mui/material';
 import SensorChart from './components/SensorChart';
 import Gauge from './components/Gauge';
 import SensorSlider from './components/SensorSlider';
-import SensorTable from './components/SensorTable'; // Import the new component
+import SensorTable from './components/SensorTable';
 
 const sensors = [
   { key: 'temperatura', label: 'Temperatura (°C)', max: 50,    color: '#ff7300' },
@@ -37,6 +37,9 @@ function App() {
 
   const handleSetTarget = vals => axios.post('/targets', vals);
 
+  // Calculate the timestamp for ten minutes ago
+  const tenMinutesAgo = new Date().getTime() - 10 * 60 * 1000;
+
   return (
     <>
       <header>Painel de Controle AgroFlow</header>
@@ -55,13 +58,14 @@ function App() {
                 </Box>
                 <Box mb={2} sx={{ height: 300 }}>
                   <SensorChart
-                    data={readings}
+                    data={readings.filter(r => new Date(r.momento_registro).getTime() >= tenMinutesAgo)}
                     dataKey={key}
                     color={color}
                   />
                 </Box>
                 <SensorSlider
                   keyName={key}
+                  label={label}
                   max={max}
                   color={color}
                   latestTarget={targets[0] || {}}
@@ -72,7 +76,6 @@ function App() {
           ))}
         </Grid>
 
-        {/* Add the sensor readings table below the cards */}
         <Box mt={4}>
           <Typography variant="h6" gutterBottom>Sensor Readings</Typography>
           <SensorTable readings={readings} />
