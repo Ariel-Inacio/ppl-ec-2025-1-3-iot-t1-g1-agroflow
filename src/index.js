@@ -86,10 +86,11 @@ const processBatch = async () => {
   try {
     await pool.query(query, [
       timestamp,
-      temperatura   || null,
-      luminosidade  || null,
-      umidade_ar    || null,
-      umidade_solo  || null
+      // Use nullish coalescing operator so that 0 remains 0.
+      temperatura ?? null,
+      luminosidade ?? null,
+      umidade_ar ?? null,
+      umidade_solo ?? null
     ]);
     console.log(`Inserted sensor snapshot at ${timestamp.toISOString()}`);
   } catch (err) {
