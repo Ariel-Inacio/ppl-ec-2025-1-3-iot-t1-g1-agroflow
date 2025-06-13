@@ -6,13 +6,15 @@ import {
 } from 'recharts';
 
 export default function Gauge({ value = 0, max = 100, color, label }) {
-  const percent = Math.min((value / max)*100, 100);
+  // Convert value to a number in case it is a string
+  const numericValue = parseFloat(value) || 0;
+  const percent = Math.min((numericValue / max) * 100, 100);
   const data = [{ name: label, value: percent, fill: color }];
 
   return (
     <Box textAlign="center">
       <Typography variant="subtitle1">
-        <h3>{label}</h3>Média: {value?.toFixed(2)}
+        <h3>{label}</h3>Média: {numericValue.toFixed(2)}
       </Typography>
       <ResponsiveContainer width="100%" height={100}>
         <RadialBarChart

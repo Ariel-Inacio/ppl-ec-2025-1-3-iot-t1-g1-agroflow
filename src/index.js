@@ -50,6 +50,18 @@ app.get("/readings", async (req, res) => {
   }
 });
 
+app.get("/average", async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM public.vw_avg_last_30_seconds"
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("DB error:", err);
+    res.status(500).json({ error: "DB error" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`HTTP API listening on port ${PORT}`);
 });
