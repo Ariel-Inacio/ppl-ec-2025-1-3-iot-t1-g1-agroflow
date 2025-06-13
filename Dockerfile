@@ -1,20 +1,25 @@
 # Use an official Node.js runtime as a parent image
 FROM node:18-alpine
 
-# Create app directory in the container
-WORKDIR /app
+# Set the working directory in the container
+WORKDIR /srv/douglas
 
-# Copy package files first for caching
+# Copy main package files for caching
 COPY package*.json ./
+# Copy the client package files for caching
+COPY client/package*.json client/
 
-# Install dependencies
-RUN npm install --production && npm run build
+# Install main dependencies (production only)
+RUN npm install --production
 
-# Bundle the app source code
+# Now copy the rest of the app (including client directory)
 COPY . .
 
-# Expose the port your app listens on (e.g., 3000)
+# Run the build (which runs build:client and possibly other build processes)
+RUN npm run build
+
+# Expose the port your app listens on
 EXPOSE 3000
 
-# Run the app
+# Start the app
 CMD ["npm", "start"]
