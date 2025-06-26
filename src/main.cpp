@@ -1,4 +1,5 @@
 #include "esp32-hal-gpio.h"
+#include "soc/soc_caps.h"
 #include <Arduino.h>
 #include <DHT.h>
 #include <PubSubClient.h>
@@ -10,24 +11,24 @@
 // Definindo os Sensores
 constexpr unsigned char DHT_TYPE = DHT11; // Tipo do sensor DHT
 constexpr unsigned char DHT_PIN = 5; // Pino do sensor DHT11
-constexpr unsigned char UMIDADE_SOLO = 33; // Pino do sensor de umidade do solo
 constexpr unsigned char LUMINOSIDADE =
 	32; // Pino do sensor de luminosidade (LDR)
+constexpr unsigned char UMIDADE_SOLO = 33; // Pino do sensor de umidade do solo
 
 // Definindo os Atuadores.
-constexpr unsigned char LED_LUMINOSIDADE =
-	22; // LED para indicar baixa luminosidade
-constexpr unsigned char VENTOINHA = 23; // Pino da ventoinha
-constexpr unsigned char LED_UMIDADE = 21; // LED para indicar baixa umidade
-constexpr unsigned char LED_SOLO = 3; // LED para indicar baixa umidade do solo
-constexpr unsigned char LED_CONTROLAVEL_PRA_TESTAR = 18; // Pro TP2.
+constexpr unsigned char PINO_BOMBA = 21; // Pino do relé da bomba
+constexpr unsigned char PINO_LAMPADA = 22; // Lâmpada
+constexpr unsigned char PINO_VENTOINHAS = 23; // Pino do relé da ventoinha
 
 // Definições para MQTT
 const char TOPICO_LUZ[] = "sensor/luminosidade";
 const char TOPICO_TEMPERATURA[] = "sensor/temperatura";
 const char TOPICO_UMIDADE_AR[] = "sensor/umidade/ar";
 const char TOPICO_UMIDADE_SOLO[] = "sensor/umidade/solo";
-const char TOPICO_LED_DE_TESTE[] = "tp2/atuador/led_teste";
+
+const char TOPICO_LAMPADA[] = "atuador/lampada";
+const char TOPICO_BOMBA[] = "atuador/bomba";
+const char TOPICO_VENTOINHAS[] = "atuador/ventoinhas";
 
 #define ID_MQTT "Agroflow" // ID MQTT para identificação de sessão
 
@@ -74,41 +75,23 @@ void mqtt_callback(char *topic, byte *payload, unsigned int length)
 	int op = atoi(msg);
 	Serial.print("Traduzido: ");
 	Serial.println(op);
-	digitalWrite(LED_CONTROLAVEL_PRA_TESTAR, op ? HIGH : LOW);
+	Serial.println(topic);
+	Serial.println();
 
-	/* if (strcmp(topic, TOPICO_LUZ) == 0) {
-		if (msg.equals("0")) {
-			digitalWrite(LED_LUMINOSIDADE, LOW);
-			Serial.println("LED(Luminosidade) apagado via MQTT");
-		} else {
-			digitalWrite(LED_LUMINOSIDADE, 255);
-			Serial.println("LED(Luminosidade) aceso via MQTT");
+	if (!strcmp(topic, TOPICO_VENTOINHAS)) {
+		Serial.println(&"Ventoinha:"[op]);
+		digitalWrite(PINO_VENTOINHAS, op ? HIGH : LOW);
+	} else if (!strcmp(topic, TOPICO_LAMPADA)) {
+		Serial.println(&"Ventoinha:"[op]);
+		digitalWrite(PINO_LAMPADA, op ? HIGH : LOW);
+	} else if (!strcmp(topic, TOPICO_BOMBA)) {
+		Serial.println(&"Ventoinha:"[op]);
+		if (op) {
+			digitalWrite(PINO_BOMBA, LOW);
+			delay(5000);
+			digitalWrite(PINO_BOMBA, HIGH);
 		}
-	} else if (strcmp(topic, TOPICO_TEMPERATURA) == 0) {
-		if (msg.equals("0")) {
-			digitalWrite(VENTOINHA, LOW);
-			Serial.println("Ventiladores desligados via MQTT");
-		} else {
-			digitalWrite(VENTOINHA, 255);
-			Serial.println("Ventiladores ligados via MQTT");
-		}
-	} else if (strcmp(topic, TOPICO_UMIDADE_AR) == 0) {
-		if (msg.equals("0")) {
-			digitalWrite(LED_UMIDADE, LOW);
-			Serial.println("LED(Umidade) apagado via MQTT");
-		} else {
-			digitalWrite(LED_UMIDADE, 255);
-			Serial.println("LED(Umidade) aceso via MQTT");
-		}
-	} else if (strcmp(topic, TOPICO_UMIDADE_SOLO) == 0) {
-		if (msg.equals("0")) {
-			digitalWrite(LED_SOLO, LOW);
-			Serial.println("LED(Bomba) apagado via MQTT");
-		} else {
-			digitalWrite(LED_SOLO, 255);
-			Serial.println("LED(Bomba) aceso via MQTT");
-		}
-	} */
+	}
 }
 
 // Reconectar ao MQTT
@@ -118,11 +101,9 @@ void reconnectMQTT(void)
 		Serial.println("Conectando ao Broker MQTT...");
 		if (MQTT.connect(ID_MQTT)) {
 			Serial.println("Conectado!");
-			MQTT.subscribe(TOPICO_LED_DE_TESTE);
-			// MQTT.subscribe(TOPICO_UMIDADE_AR);
-			// MQTT.subscribe(TOPICO_LUZ);
-			// MQTT.subscribe(TOPICO_TEMPERATURA);
-			// MQTT.subscribe(TOPICO_UMIDADE_SOLO);
+			MQTT.subscribe(TOPICO_LAMPADA);
+			MQTT.subscribe(TOPICO_VENTOINHAS);
+			MQTT.subscribe(TOPICO_BOMBA);
 		} else {
 			Serial.println(
 				"Falha na conexão. Tentando novamente em 2 segundos.");
@@ -157,11 +138,11 @@ void reconnectWiFi(void)
 // Leitura dos sensores
 void lerSensores(void)
 {
+	delay(50);
 	float temperatura = dht.readTemperature();
+	delay(50);
 	float umidadeAr = dht.readHumidity();
-	umidadeAr = 542;
-	temperatura = 24;
-	int umidadeSolo = analogRead(UMIDADE_SOLO);
+	int umidadeSolo = 4095 - analogRead(UMIDADE_SOLO);
 	int luminosidade = analogRead(LUMINOSIDADE);
 
 	Serial.print("Temperatura: ");
@@ -202,21 +183,20 @@ void setup()
 
 	// Configuração dos pinos
 	Serial.println("Configurando pinos");
-	pinMode(LED_LUMINOSIDADE, OUTPUT);
-	pinMode(LED_UMIDADE, OUTPUT);
-	pinMode(VENTOINHA, OUTPUT);
-	pinMode(LED_CONTROLAVEL_PRA_TESTAR, OUTPUT);
+	pinMode(PINO_LAMPADA, OUTPUT);
+	pinMode(PINO_BOMBA, OUTPUT);
+	pinMode(PINO_VENTOINHAS, OUTPUT);
 	pinMode(LUMINOSIDADE, INPUT);
 	pinMode(UMIDADE_SOLO, INPUT);
 
 	Serial.println("Apagando LEDs");
 	Serial.flush();
-	digitalWrite(LED_LUMINOSIDADE, LOW);
-	digitalWrite(LED_UMIDADE, LOW);
-	digitalWrite(VENTOINHA, LOW);
+	digitalWrite(PINO_LAMPADA, LOW);
+	digitalWrite(PINO_BOMBA, HIGH);
+	digitalWrite(PINO_VENTOINHAS, LOW);
 
 	Serial.println("Inicializando sensor DHT11");
-	dht.begin(); // Inicializa o sensor DHT11
+	dht.begin();
 
 	Serial.println("Inicializando WiFi");
 	initWiFi();
@@ -228,5 +208,5 @@ void loop()
 	VerificaConexoesWiFIEMQTT();
 	lerSensores();
 	MQTT.loop();
-	delay(2000);
+	delay(100);
 }
