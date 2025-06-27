@@ -229,14 +229,14 @@ async function controlActuators() {
     if (controlState.fans.state === wantedFans) {
       // Re-envia o mesmo comando para o ESP32 recebê-lo.
       mqttClient.publish("atuador/ventoinhas", wantedFans);
-      console.log(`🌬️ Fans re-sent ${wantedFans} @ ${new Date(now).toISOString()}`);
+      console.log(`🌬️  Fans re-sent ${wantedFans} @ ${new Date(now).toISOString()}`);
     }
     else if (now - controlState.fans.lastToggle >= ACTUATOR_DEBOUNCE_MS) {
       // Realiza a comutação sempre levando em conta o timeout.
       mqttClient.publish("atuador/ventoinhas", wantedFans);
       controlState.fans.state = wantedFans;
       controlState.fans.lastToggle = now;
-      console.log(`🌬️ Fans toggled to ${wantedFans} @ ${new Date(now).toISOString()}`);
+      console.log(`🌬️  Fans toggled to ${wantedFans} @ ${new Date(now).toISOString()}`);
     }
 
     // Dispara a bomba uma vez se a umidade do solo está abaixo do alvo.
@@ -253,7 +253,7 @@ async function controlActuators() {
           state: "0",
           lastToggle: now
         };
-        console.log(`🌬️ Fans forced OFF for pump @ ${new Date(now).toISOString()}`);
+        console.log(`🌬️  Fans forced OFF for pump @ ${new Date(now).toISOString()}`);
       }
 
       // Dispara a bomba.
