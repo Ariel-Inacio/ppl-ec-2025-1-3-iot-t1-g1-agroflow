@@ -50,6 +50,7 @@ const pool = new Pool({
 // Instancia conexão com o broker MQTT.
 const mqttClient = mqtt.connect(MQTT_URL);
 
+
 // ========================================================================= //
 //                           GERÊNCIA DOS SENSORES                           //
 // ========================================================================= //
@@ -150,6 +151,7 @@ mqttClient.on("message", (topic, message) => {
     batchTimer = setTimeout(processBatch, BATCH_INTERVAL);
   }
 });
+
 
 // ========================================================================= //
 //                          GERÊNCIA DOS ATUADORES                           //
