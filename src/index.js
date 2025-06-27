@@ -155,10 +155,10 @@ mqttClient.on("message", (topic, message) => {
 //                          GERÊNCIA DOS ATUADORES                           //
 // ========================================================================= //
 
-const ACTUATOR_DEBOUNCE_MS    = 10_000;     // 10s entre (des)ativações dos atuadores.
-const PUMP_COOLDOWN_MS        = 2 * 60_000; // 2 minutos entre ativaçoes da bomba.
-const FANS_DISABLE_AFTER_PUMP = 60_000;     // 60s após bomba para desativar ventoinhas.
-const CONTROL_INTERVAL_MS     = 5_000;      // Controlar atuadores a cada 5s.
+const ACTUATOR_DEBOUNCE_MS    = 10_000; // 10s entre (des)ativações dos atuadores.
+const PUMP_COOLDOWN_MS        = 30_000; // 30 s entre ativaçoes da bomba.
+const FANS_DISABLE_AFTER_PUMP = 15_000; // 15s após bomba para desativar ventoinhas.
+const CONTROL_INTERVAL_MS     = 3_000;  // Controlar atuadores a cada 3s.
 
 // Objeto para notar os tempos de última ativação ou desativação, e o estado
 // atual de cada atuador.
