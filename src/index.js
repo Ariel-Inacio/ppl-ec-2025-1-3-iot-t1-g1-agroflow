@@ -206,13 +206,16 @@ async function controlActuators() {
 
     // Ativa a lâmpada se a luminosidade média for menor que o alvo.
     const wantedLamp = d.avg_lux < d.target_lux ? "1" : "0";
-    if (
-      controlState.lamp.state !== wantedLamp &&
-      now - controlState.lamp.lastToggle >= ACTUATOR_DEBOUNCE_MS
-    ) {
+    if (controlState.lamp.state === wantedLamp) {
+      // Re-envia o mesmo comando para o ESP32 recebê-lo.
       mqttClient.publish("atuador/lampada", wantedLamp);
-      controlState.lamp = { state: wantedLamp, lastToggle: now };
-      console.log(`💡 Lamp set to ${wantedLamp} @ ${new Date(now).toISOString()}`);
+      console.log(`💡 Lamp re-sent ${wantedLamp} @ ${new Date(now).toISOString()}`);
+    } else if (now - controlState.lamp.lastToggle >= ACTUATOR_DEBOUNCE_MS) {
+      // Realiza a comutação sempre levando em conta o timeout.
+      mqttClient.publish("atuador/lampada", wantedLamp);
+      controlState.lamp.state = wantedLamp;
+      controlState.lamp.lastToggle = now;
+      console.log(`💡 Lamp toggled to ${wantedLamp} @ ${new Date(now).toISOString()}`);
     }
 
     // Ativa as ventoinhas se a temperatura média ou a umidade do ar média
@@ -223,18 +226,17 @@ async function controlActuators() {
       fansAllowed &&
       (d.avg_temp > d.target_temp || d.avg_air_humidity > d.target_air_humidity);
     const wantedFans = needFans ? "1" : "0";
-
-    if (
-      controlState.fans.state !== wantedFans &&
-      now - controlState.fans.lastToggle >= ACTUATOR_DEBOUNCE_MS
-    ) {
+    if (controlState.fans.state === wantedFans) {
+      // Re-envia o mesmo comando para o ESP32 recebê-lo.
       mqttClient.publish("atuador/ventoinhas", wantedFans);
-      controlState.fans = {
-        ...controlState.fans,
-        state: wantedFans,
-        lastToggle: now
-      };
-      console.log(`🌬️ Fans set to ${wantedFans} @ ${new Date(now).toISOString()}`);
+      console.log(`🌬️ Fans re-sent ${wantedFans} @ ${new Date(now).toISOString()}`);
+    }
+    else if (now - controlState.fans.lastToggle >= ACTUATOR_DEBOUNCE_MS) {
+      // Realiza a comutação sempre levando em conta o timeout.
+      mqttClient.publish("atuador/ventoinhas", wantedFans);
+      controlState.fans.state = wantedFans;
+      controlState.fans.lastToggle = now;
+      console.log(`🌬️ Fans toggled to ${wantedFans} @ ${new Date(now).toISOString()}`);
     }
 
     // Dispara a bomba uma vez se a umidade do solo está abaixo do alvo.
