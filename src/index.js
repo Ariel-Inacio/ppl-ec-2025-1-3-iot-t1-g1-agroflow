@@ -237,9 +237,6 @@ async function controlActuators() {
       console.log(`🌬️ Fans set to ${wantedFans} @ ${new Date(now).toISOString()}`);
     }
 
-    // 3) PUMP: if avg_soil_humidity < target_soil_humidity
-    //    AND cooldown expired → fire pump ("1") once
-
     // Dispara a bomba uma vez se a umidade do solo está abaixo do alvo.
     if (
       d.avg_soil_humidity < d.target_soil_humidity &&
