@@ -7,10 +7,10 @@ import SensorSlider from './components/SensorSlider';
 import SensorTable from './components/SensorTable';
 
 const sensors = [
-  { key: 'temperatura', label: 'Temperatura (°C)', max: 50,    color: '#ff7300' },
-  { key: 'luminosidade',label: 'Luminosidade',     max: 10000, color: '#fdd835' },
-  { key: 'umidade_ar',  label: 'Umidade (Ar %)',   max: 100,   color: '#42a5f5' },
-  { key: 'umidade_solo',label: 'Umidade (Solo %)', max: 1000,  color: '#8d6e63' }
+  { key: 'temperatura', label: 'Temperatura (°C)', max: 80,   color: '#ff7300' },
+  { key: 'luminosidade',label: 'Luminosidade',     max: 4096, color: '#fdd835' },
+  { key: 'umidade_ar',  label: 'Umidade (Ar %)',   max: 100,  color: '#42a5f5' },
+  { key: 'umidade_solo',label: 'Umidade (Solo)',   max: 4096, color: '#8d6e63' }
 ];
 
 function App() {
