@@ -1,4 +1,4 @@
-# Código do ESP
+// Código do ESP
 
 #include "esp32-hal-gpio.h"
 #include "soc/soc_caps.h"
