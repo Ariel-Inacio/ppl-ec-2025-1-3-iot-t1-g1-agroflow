@@ -1,38 +1,38 @@
 # TÍTULO DO PROJETO
 
-`CAMPUS`
+`PUC Minas Lourdes`
 
-`CURSO`
+`Engenharia de Computação`
 
-`SEMESTRE`
+`3° semestre`
 
-`DISCIPLINA`
+`Internet das Coisas (IOT)`
 
 
 ## Integrantes
 
-* Nome completo do aluno 1
-* Nome completo do aluno 2
-* Nome completo do aluno 3
-* Nome completo do aluno 4
-* Nome completo do aluno 5
+Amanda Canizela Guimaraes 
+Ariel Inácio Jordão Coelho 
+Bruna de Paula Anselmi 
+João Pedro Neffa de Sousa Oliveira
+Lucca Mendes Alves Pellegrini 
+Pedro Vitor Martins Caiafa Andrade
 
 ## Orientador
 
-* Nome completo do professor 1 (Nome do professor de IoT1)
-* Nome completo do professor 2 (Nome do professor de Banco de Dados)
+Julio Cesar Dillinger Conway 
 
-## Resumo
+## Resumo do Projeto AgroFlow - Estufa Inteligente
 
-Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo desenvolvido.
+O AgroFlow é uma estufa inteligente que monitora e controla automaticamente o ambiente para otimizar o cultivo. Ela utiliza os seguintes sensores: DHT11 para medir temperatura e umidade do ar, sensor de umidade do solo e sensor de luminosidade.
+
+Para atuar no ambiente, conta com dois ventiladores (um para entrada e outro para saída de ar), uma lâmpada simulada por um LED e uma bomba de água para irrigação.
+
+O sistema utiliza o protocolo MQTT como broker para comunicação entre sensores, atuadores e a plataforma. Os dados coletados são armazenados em um banco de dados e podem ser monitorados por meio de um site. Nesse site, o usuário define metas para cada parâmetro; quando um valor está fora da meta, os atuadores correspondentes são acionados automaticamente para corrigir as condições da estufa.
 
 # Código (do arduino ou esp32)
 
 <li><a href="Codigo/README.md"> Código Fonte (.ino)</a></li>
-
-# Aplicativo para Smartphone
-
-<li><a href="App/README.md"> Aplicativo </a></li>
 
 # Apresentação
 
