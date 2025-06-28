@@ -41,11 +41,6 @@ O sistema utiliza o protocolo MQTT como broker para comunicação entre sensores
 <li><a href="Apresentacao/README.md"> Fotos do Projeto</a></li>
 </ol>
 
-# Manual de Utilização
-
-<li><a href="Manual/manual de utilização.md"> Manual de Utilização</a></li>
-
-
 # Documentação
 
 <ol>
