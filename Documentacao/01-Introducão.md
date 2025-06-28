@@ -1,17 +1,20 @@
 # Introdução
 
-Texto descritivo com a visão geral do projeto abordado. Inclui o contexto, o problema, os objetivos, a justificativa e o público-alvo do projeto.
+O projeto Agroflow consiste no desenvolvimento de uma estufa inteligente equipada com sensores para monitoramento ambiental e atuadores para controle automático de condições internas, como iluminação, irrigação e ventilação. O objetivo é otimizar o cultivo de plantas, garantindo condições ideais de temperatura, umidade e luminosidade, ao mesmo tempo em que promove a automação e a economia de recursos.
 
 ## Problema
 
-Nesse momento você deve apresentar o problema que o seu projeto deve  resolver. Descreva também o contexto em que essa aplicação será usada, se  houver: empresa, tecnologias, etc. 
+Muitas plantações e cultivos agrícolas sofrem com o manejo inadequado das condições ambientais, resultando em perda de produtividade e desperdício de água e energia. O controle manual dessas variáveis é muitas vezes impreciso e trabalhoso, especialmente em pequenas propriedades ou ambientes urbanos. O projeto Agroflow propõe uma solução tecnológica que utiliza sensores e comunicação via MQTT para automatizar o monitoramento e controle, reduzindo erros e otimizando o uso dos recursos.
 
 ## Objetivos
 
-Aqui você deve descrever os objetivos do trabalho indicando que o objetivo geral é desenvolver um projeto para solucionar o problema apresentado acima. 
+Objetivo Geral: Desenvolver uma estufa inteligente capaz de monitorar parâmetros ambientais essenciais e controlar automaticamente atuadores para manutenção das condições ideais de cultivo.
 
-Apresente também alguns (pelo menos 2) objetivos específicos dependendo de onde você vai querer concentrar a sua prática investigativa, ou como você vai aprofundar no seu trabalho.
- 
+**Objetivos Específicos:**
+
+- Implementar a leitura de sensores de temperatura, umidade do ar, umidade do solo e luminosidade utilizando um microcontrolador ESP32.
+- Integrar a comunicação via protocolo MQTT para envio dos dados coletados e recebimento de comandos para controle remoto dos atuadores (bomba, lâmpada e ventoinhas).
+
 ## Público-Alvo
 
-Descreva quem serão as pessoas que usarão o projeto. A ideia é, dentro do possível, conhecer um pouco mais sobre o perfil dos usuários: conhecimentos prévios, relação com a tecnologia, etc.
+O projeto Agroflow é voltado principalmente para pequenos agricultores, horticultores urbanos e entusiastas de jardinagem que buscam soluções acessíveis para automação de suas estufas ou hortas. Esses usuários possuem conhecimentos básicos a intermediários em tecnologia e desejam melhorar o manejo das plantas com o auxílio de sistemas automatizados simples e eficientes.
