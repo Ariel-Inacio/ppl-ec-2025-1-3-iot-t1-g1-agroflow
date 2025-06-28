@@ -32,7 +32,7 @@ O sistema utiliza o protocolo MQTT como broker para comunicação entre sensores
 
 # Código (do arduino ou esp32)
 
-<li><a href="Codigo/README.md"> Código Fonte (.ino)</a></li>
+<li><a href="Codigo/README.cpp"> Código Fonte (.ino)</a></li>
 
 # Apresentação
 
