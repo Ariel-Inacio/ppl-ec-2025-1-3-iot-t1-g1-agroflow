@@ -46,7 +46,8 @@ estufa.
 - [Código do painel de controle (front end)](App/client/)
 - [Código do painel de controle (back end)](App/src/index.js)
 - [Código para a incialização das tabelas no PostgreSQL](Servidores/Banco%20de%20Dados/create_tables.sql)
-- [Configuração do proxy reverso para o back end](Servidores/openresty/nginx.conf)
+- [Configuração do proxy reverso para o back end (OpenResty)](Servidores/openresty/nginx.conf)
+- [Inicialização do broker MQTT (nanomq)][Servidores/nanomq/deploy.sh]
 
 # Apresentação
 
