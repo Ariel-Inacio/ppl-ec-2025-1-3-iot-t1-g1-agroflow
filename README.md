@@ -11,7 +11,7 @@
 
 ## Integrantes
 
-- Amanda Canizela Guimaraes
+- Amanda Canizela Guimarães
 - Ariel Inácio Jordão Coelho
 - Bruna de Paula Anselmi
 - João Pedro Neffa de Sousa Oliveira
