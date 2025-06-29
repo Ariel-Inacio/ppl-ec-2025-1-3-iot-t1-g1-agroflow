@@ -1,0 +1,14 @@
+[Unit]
+Description=Update SSL certificates
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+Restart=on-failure
+ExecStart=/var/lib/certbot/bin/certbot renew
+
+[Install]
+WantedBy=multi-user.target
+
+; vim: ft=systemd

@@ -48,6 +48,9 @@ estufa.
 - [Código para a incialização das tabelas no PostgreSQL](Servidores/Banco%20de%20Dados/create_tables.sql)
 - [Configuração do proxy reverso para o back end (OpenResty)](Servidores/openresty/nginx.conf)
 - [Inicialização do broker MQTT NanoMQ](Servidores/nanomq/deploy.sh)
+- Unidades de [serviço](Servidores/TLS/certbot-renew.service) e
+  [timer](Servidores/TLS/certbot-renew.timer) para manutenção dos certificados
+  TLS.
 
 # Apresentação
 
