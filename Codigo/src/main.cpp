@@ -38,8 +38,6 @@ int BROKER_PORT = 1883;
 // Configuração do WiFi
 const char *SSID = "";
 const char *PASSWORD = "";
-// const char* SSID = "WIFI CASA19 5G";
-// const char* PASSWORD = "brancaleone";
 
 // Objetos globais
 WiFiClient espClient;
