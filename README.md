@@ -45,7 +45,7 @@ estufa.
 - [Código do ESP32](Codigo/src/main.cpp)
 - [Código do painel de controle (front end)](App/client/)
 - [Código do painel de controle (back end)](App/src/index.js)
-- [Código para a incialização das tabelas no PostgreSQL](Banco%20de%20Dados/create_tables.sql)
+- [Código para a incialização das tabelas no PostgreSQL](Servidores/Banco%20de%20Dados/create_tables.sql)
 
 # Apresentação
 
