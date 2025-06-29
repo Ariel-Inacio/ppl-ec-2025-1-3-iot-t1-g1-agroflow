@@ -11,8 +11,7 @@
 // Definindo os Sensores
 constexpr unsigned char DHT_TYPE = DHT11; // Tipo do sensor DHT
 constexpr unsigned char DHT_PIN = 5; // Pino do sensor DHT11
-constexpr unsigned char LUMINOSIDADE =
-	32; // Pino do sensor de luminosidade (LDR)
+constexpr unsigned char LUMINOSIDADE = 32; // Pino do sensor de luminosidade (LDR)
 constexpr unsigned char UMIDADE_SOLO = 33; // Pino do sensor de umidade do solo
 
 // Definindo os Atuadores.
