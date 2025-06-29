@@ -1,0 +1,21 @@
+/* index.css */
+body {
+  margin: 0;
+  background-color: #f4f6f8;
+  font-family: 'Montserrat', sans-serif;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: linear-gradient(45deg, #2e7d32, #66bb6a);
+  color: white;
+  padding: 1rem 2rem;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+}

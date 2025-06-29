@@ -1,0 +1,20 @@
+{
+  "name": "douglas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:client": "npm --prefix client install && npm --prefix client run build",
+    "build": "npm run build:client",
+    "start": "node src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mqtt": "^5.13.1",
+    "pg": "^8.16.0"
+  }
+}
