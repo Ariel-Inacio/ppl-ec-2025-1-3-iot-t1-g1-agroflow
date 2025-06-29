@@ -1,4 +1,4 @@
-# AGROFLOW
+# AgroFlow: Estufa Inteligente
 
 `PUC Minas — Lourdes`
 
@@ -18,9 +18,9 @@
 - Lucca Mendes Alves Pellegrini
 - Pedro Vitor Martins Caiafa Andrade
 
-## Orientador
+## Orientadores
 
-Julio Cesar Dillinger Conway
+- Júlio César Dillinger Conway
 
 ## Resumo do Projeto AgroFlow — Estufa Inteligente
 
